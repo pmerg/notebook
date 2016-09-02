@@ -1,0 +1,6 @@
+So, I've seen other people using plain GitHub repos as a CMS. I'm not refering to static-site generators, 
+or [hacks like this one](https://blog.vrypan.net/2015/05/29/post-to-github-jekyll-using-a-bookmarklet/). I'm talking about
+text files uploaded to GitHub as if they were part of the codebase of a project.
+
+In addition to git, GitHub lets you add, edit, and delete files using a browser. And Markdown files are automatically 
+rendered into HTML. So it does make sense somehow. But I'll have to see how it works for me.
