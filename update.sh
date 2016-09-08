@@ -3,7 +3,14 @@
 git pull
 
 filename=`date "+%Y%m%d"`.md
-vi $filename
+
+if [ -t 0 ]; then
+    vi $filename
+else
+	while IFS= read -r line; do
+        echo "$line" >> $filename
+    done
+fi
 
 CONTEXT1=`curl -s -N http://wttr.in/\?m | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g' | head -7`
 # CONTEXT1 holds the current weather and location. 
