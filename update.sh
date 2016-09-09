@@ -4,6 +4,14 @@ git pull
 
 filename=`date "+%Y%m%d"`.md
 
+if [ ! -e $filename ]; then
+	echo '```'>> $filename && \
+	date '+%A, %B %d %Y' >> $filename && \
+	curl -s -N http://wttr.in/\?m | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g' | head -7 >> $filename &&\
+	echo '```'>> $filename && \
+	echo  >> $filename
+fi
+
 if [ -t 0 ]; then
     vi $filename
 else
@@ -12,14 +20,15 @@ else
     done
 fi
 
-CONTEXT1=`curl -s -N http://wttr.in/\?m | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g' | head -7`
-# CONTEXT1 holds the current weather and location. 
-# Hat tip to http://unix.stackexchange.com/a/140255/188747 for the sed
-# command to remove ansi escape codes from wttr.in output.
 
-commit_msg="$filename updated.
-
-$CONTEXT1"
+commit_msg="$filename updated."
+CONTEXT_WEATHER=`curl -s -N http://wttr.in/\?m | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g' | head -7`
 git add $filename
-git commit -m "$commit_msg" $filename && git push
+git commit -m "$commit_msg
+$CONTEXT_WEATHER
+" $filename && git push
 
+
+# the curl wttr.in command outputs holds the current weather and 
+# current location. Hat tip to http://unix.stackexchange.com/a/140255/188747 
+# for the sed command to remove ansi escape codes from wttr.in output.
